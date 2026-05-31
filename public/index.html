@@ -1015,7 +1015,7 @@
 // CONFIG
 // ══════════════════════════════════════════════════════
 const WX_KEY   = 'a341c029a9ed48ad85354611211803';
-const NEWS_KEY = 'b226ea7612a9e5364844ff5d6106a7b3';
+const NEWS_KEY = '285e0bd6d3c9a9b75613d01f17570096';
 const OWM_KEY  = 'ecbcda255cdaa4ad806334ac90fa08fa';
 
 let unit       = localStorage.getItem('nimbus-unit') || 'c';
@@ -1233,19 +1233,35 @@ async function fetchWx(q) {
 // ══════════════════════════════════════════════════════
 // LOAD WEATHER — main
 // ══════════════════════════════════════════════════════
+const COUNTRY_CODES = {
+    India: 'in',
+    'United States of America': 'us',
+    'United Kingdom': 'gb',
+    Canada: 'ca',
+    Australia: 'au',
+    Germany: 'de',
+    France: 'fr',
+    Japan: 'jp',
+    China: 'cn'
+};
+
 async function loadWeather(q) {
     showLoad('Fetching weather data...');
     try {
         const d = await fetchWx(q);
         wxData = d;
         renderAll(d);
-        fetchNews();
+
+        const country = COUNTRY_CODES[d.location.country] ? `us,${COUNTRY_CODES[d.location.country]}` : 'us';
+        fetchNews(country.toLowerCase());
     } catch(e) {
         alert(e.message);
     } finally {
         hideLoad();
     }
 }
+
+
 
 function renderAll(d) {
     updateStatusBar(d);
@@ -1748,20 +1764,24 @@ function setLayer(layer, btn) {
 
 
 // ══════════════════════════════════════════════════════
-// NEWS (GNews)
+// NEWS (MediaStack)
 // ══════════════════════════════════════════════════════
-async function fetchNews() {
+async function fetchNews(country = 'us') {
     const grid = document.getElementById('news-grid');
 
     try {
         const r = await fetch(
-            `https://gnews.io/api/v4/top-headlines?lang=en&country=us&max=9&apikey=${NEWS_KEY}`
+            `https://api.mediastack.com/v1/news?access_key=${NEWS_KEY}&languages=en&countries=${country}&limit=9&sort=published_desc`
         );
 
         const data = await r.json();
 
-        const arts = (data.articles || []).filter(
-            a => a.title && !a.title.includes('[Removed]')
+        if (data.error) {
+            throw new Error(data.error.message);
+        }
+
+        const arts = (data.data || []).filter(
+            a => a.title && a.url
         );
 
         if (!arts.length) throw new Error('no articles');
@@ -1784,7 +1804,7 @@ async function fetchNews() {
                 ` : ''}
 
                 <div class="news-source">
-                    ${a.source?.name || 'News'}
+                    ${a.source || 'News'}
                 </div>
 
                 <div class="news-title">
@@ -1792,8 +1812,8 @@ async function fetchNews() {
                 </div>
 
                 <div class="news-meta">
-                    <span>${a.source?.name || ''}</span>
-                    <span>${ago(a.publishedAt)}</span>
+                    <span>${a.source || ''}</span>
+                    <span>${ago(a.published_at)}</span>
                 </div>
             </a>
         `).join('');
