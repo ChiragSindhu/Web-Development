@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Weather and News</title>
+<head>
+    <!--API KEY for weather api: a341c029a9ed48ad85354611211803-->
+    <!--API KEY for LATLONG to Place : 47c187f2accd40f6b3e3de635bed5089-->
+    <!--Api Key for Static Map :  ijkGFg4uS2shXYNMTwwOD3qAjpcnkwx7-->
+    <!--Api Key for Time : 76YXYKOLGKGJ-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheet.css">
+
+    <!--Very Slow Loading must be fixed-->
+    <!--Work only when you add event in the text field-->
+    <script src="search_cities.js"></script>
+
+    <script src="find_location.js"></script>
+    <script src="find_temp.js"></script>
+    <script src="forecast.js"></script>
+    <script src="time.js"></script>
+
+
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiko:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ravi+Prakash&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div id="navbar">
+        <div id="title">
+            <font size = 11>W</font>eather and News App
+        </div>
+    </div>
+
+    <div id="location-tab">
+        <div id="location-title">
+            <u>Your Location</u>
+        </div>
+        <div>
+            <input type="text" id="ipt_loca-txt" placeholder="Your City Name" list="related_items"">
+            <datalist id="related_items"></datalist>
+            <input type="button" id="searh_loca-bttn" value="Search" onclick="show_temp()">
+        </div>
+    </div>
+
+    <div id="time" align="CENTER"></div>
+
+    <div id="temp-mapimg-content">
+    <div id="temp-tab">
+        <div id="temp-title">
+            Temperature
+        </div>
+        <div id="temp_content">
+            <hr class="all">
+            <div id="temp-country-content"></div>
+            <div id="location_content"></div>
+            <div id="temp-update"></div>
+            <div id="temperature-simple">
+                <span id="temp-image"></span>
+                <span id="real-temp" onclick="changetempscale()"></span>
+            </div>
+        </div>
+        <div id="more-info">
+            <hr class="all">
+            <div id="condition"></div>
+            <div id="is_day"></div>
+            <hr class="all">
+            <div id="air-q-title">
+                Air Quality
+                <div id="air-q-2_10"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map-img-tab">
+        <div id="map-title">
+            Locattion Map
+        </div>
+        <hr class="all">
+        <div id="location-map"></div>
+    </div>
+
+    <div id="astro-tab">
+        <div id="astro-title">
+            Astronomy - TODAY
+        </div>
+        <hr class="all">
+
+        <div id="sun-rise"></div>
+        <div id="sun-set"></div>
+
+        <div id="day-max-temp"></div>
+        <div id="day-min-temp"></div>
+
+        <hr>
+
+        <div id="cloud-per">
+            Cloud Density
+            <div id="pp1"></div>
+        </div>
+        <div id="moon-ill">
+            Moon Illumination
+            <div id="pp2"></div>
+        </div>
+    </div>
+    </div>
+    
+    <div id="forcast-tab">
+        <div id="forcast-title">
+            Forcast <div id="forcast-days"></div>
+        </div>
+        <hr class="all">
+        <div id="all-forcast-data"></div>
+    </div>
+
+    <!--COPYRIGHT CLAIM-->
+    <footer>
+        <p id="copyright-mark">Created by Chirag Sindhu. ©2021</p>
+    </footer>
+</body>
+</html>
