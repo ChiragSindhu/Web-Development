@@ -1,6 +1,6 @@
 # Weather Systems
 
-A production-grade weather intelligence platform built using vanilla web technologies and real-world APIs. Weather demonstrates advanced frontend engineering concepts including API integration, geospatial visualization, canvas rendering, responsive UI architecture, and data-driven user experiences.
+A weather intelligence platform built using vanilla web technologies and real-world APIs. Weather demonstrates advanced frontend engineering concepts including API integration, geospatial visualization, canvas rendering, responsive UI architecture, and data-driven user experiences.
 
 ---
 
@@ -13,6 +13,7 @@ The application is designed to showcase modern browser capabilities without rely
 ---
 
 ## Preview
+Live Demo: [https://gestureresearchdatabase.web.app](https://gestureresearchdatabase.web.app)
 
 ![Weather Dashboard](./preview.png)
 

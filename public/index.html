@@ -1015,7 +1015,7 @@
 // CONFIG
 // ══════════════════════════════════════════════════════
 const WX_KEY   = 'a341c029a9ed48ad85354611211803';
-const NEWS_KEY = 'dab2d1282bf44773817f2c4f4c79bb12';
+const NEWS_KEY = 'b226ea7612a9e5364844ff5d6106a7b3';
 const OWM_KEY  = 'ecbcda255cdaa4ad806334ac90fa08fa';
 
 let unit       = localStorage.getItem('nimbus-unit') || 'c';
@@ -1746,31 +1746,66 @@ function setLayer(layer, btn) {
     }
 }
 
+
 // ══════════════════════════════════════════════════════
-// NEWS
+// NEWS (GNews)
 // ══════════════════════════════════════════════════════
 async function fetchNews() {
     const grid = document.getElementById('news-grid');
+
     try {
-        const r    = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${NEWS_KEY}&pageSize=9`);
+        const r = await fetch(
+            `https://gnews.io/api/v4/top-headlines?lang=en&country=us&max=9&apikey=${NEWS_KEY}`
+        );
+
         const data = await r.json();
-        const arts = (data.articles||[]).filter(a=>a.title&&!a.title.includes('[Removed]'));
+
+        const arts = (data.articles || []).filter(
+            a => a.title && !a.title.includes('[Removed]')
+        );
+
         if (!arts.length) throw new Error('no articles');
 
         grid.style.gridTemplateColumns = 'repeat(3,1fr)';
-        grid.innerHTML = arts.slice(0,9).map(a=>`
-            <a class="news-card" href="${a.url}" target="_blank" rel="noopener" style="border-right:1px solid var(--border);">
-                ${a.urlToImage?`<img class="news-img" src="${a.urlToImage}" alt="" onerror="this.style.display='none'" loading="lazy">`:''}
-                <div class="news-source">${a.source?.name||'News'}</div>
-                <div class="news-title">${a.title}</div>
+
+        grid.innerHTML = arts.map(a => `
+            <a class="news-card"
+               href="${a.url}"
+               target="_blank"
+               rel="noopener"
+               style="border-right:1px solid var(--border);">
+
+                ${a.image ? `
+                    <img class="news-img"
+                         src="${a.image}"
+                         alt=""
+                         loading="lazy"
+                         onerror="this.style.display='none'">
+                ` : ''}
+
+                <div class="news-source">
+                    ${a.source?.name || 'News'}
+                </div>
+
+                <div class="news-title">
+                    ${a.title}
+                </div>
+
                 <div class="news-meta">
-                    <span>${a.author?a.author.split(',')[0].slice(0,22):''}</span>
+                    <span>${a.source?.name || ''}</span>
                     <span>${ago(a.publishedAt)}</span>
                 </div>
             </a>
         `).join('');
-    } catch {
-        grid.innerHTML = `<div style="padding:40px;color:var(--text-3);text-align:center;grid-column:1/-1;font-size:12px;">No article</div>`;
+
+    } catch (err) {
+        console.error('News error:', err);
+
+        grid.innerHTML = `
+            <div style="padding:40px;color:var(--text-3);text-align:center;grid-column:1/-1;font-size:12px;">
+                No articles available
+            </div>
+        `;
     }
 }
 
