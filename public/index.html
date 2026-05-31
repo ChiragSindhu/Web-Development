@@ -1277,7 +1277,7 @@ function renderAll(d) {
     renderAlerts(d.alerts?.alert || []);
     initMap(d.location.lat, d.location.lon, d.location.name);
     startClock(d.location.tz_id);
-    document.title = `${C(d.current.temp_c)}° ${d.location.name} — Nimbus`;
+    document.title = `${C(d.current.temp_c)}° ${d.location.name}`;
 }
 
 // ══════════════════════════════════════════════════════
